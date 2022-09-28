@@ -13,36 +13,20 @@ public enum RateLimiterStrategyType
   FIXED_TIME_WINDOW
     {
       @Override
-      RateLimiterStrategy create()
+      public RateLimiterStrategy create(RateLimiterConfiguration rateLimiterConfiguration)
       {
-        return new FixedTimeWindowStrategy();
+        return new FixedTimeWindowStrategy(rateLimiterConfiguration);
       }
     },
   ROLLING_WINDOW
     {
       @Override
-      RateLimiterStrategy create()
-      {
-        throw new RateLimiterException("Not implemented yet");
-      }
-    },
-  SLIDING_WINDOW
-    {
-      @Override
-      RateLimiterStrategy create()
-      {
-        throw new RateLimiterException("Not implemented yet");
-      }
-    },
-  SLIDING_WINDOW_WITH_COUNTERS
-    {
-      @Override
-      RateLimiterStrategy create()
+      public RateLimiterStrategy create(RateLimiterConfiguration rateLimiterConfiguration)
       {
         throw new RateLimiterException("Not implemented yet");
       }
     };
 
 
-  abstract RateLimiterStrategy create();
+  public abstract RateLimiterStrategy create(RateLimiterConfiguration rateLimiterConfiguration);
 }

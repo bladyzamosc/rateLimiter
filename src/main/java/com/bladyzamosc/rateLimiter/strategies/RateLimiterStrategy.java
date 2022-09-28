@@ -6,4 +6,5 @@ package com.bladyzamosc.rateLimiter.strategies;
  */
 public interface RateLimiterStrategy
 {
+  long acquire(int length);
 }
