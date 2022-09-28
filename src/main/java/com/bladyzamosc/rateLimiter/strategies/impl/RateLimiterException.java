@@ -1,6 +1,15 @@
-package com.bladyzamosc.rateLimiter.strategies.impl;/**
- * User: Z6EKI
+package com.bladyzamosc.rateLimiter.strategies.impl;
+
+/**
+ * User: Bladyzamosc
  * Date: 28.09.2022
  */
-public class RateLimiterException {
+public class RateLimiterException extends RuntimeException
+{
+  private final String message;
+
+  public RateLimiterException(String message)
+  {
+    this.message = message;
+  }
 }
