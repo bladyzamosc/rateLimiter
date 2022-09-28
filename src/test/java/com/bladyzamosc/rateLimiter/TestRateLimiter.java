@@ -90,6 +90,7 @@ public class TestRateLimiter
       .withLimit(1)
       .withTimeInMillis(10000)
       .build());
+
     Assertions.assertThrows(RateLimiterException.class, () -> rateLimiter.acquire(-2));
   }
 
