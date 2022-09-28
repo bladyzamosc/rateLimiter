@@ -1,4 +1,4 @@
-package com.bladyzamosc.rateLimiter.strategies.impl;
+package com.bladyzamosc.rateLimiter.exceptions;
 
 /**
  * User: Bladyzamosc

@@ -2,7 +2,7 @@ package com.bladyzamosc.rateLimiter;
 
 import com.bladyzamosc.rateLimiter.configuration.RateLimiterConfiguration;
 import com.bladyzamosc.rateLimiter.configuration.RateLimiterStrategyType;
-import com.bladyzamosc.rateLimiter.strategies.impl.RateLimiterException;
+import com.bladyzamosc.rateLimiter.exceptions.RateLimiterException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

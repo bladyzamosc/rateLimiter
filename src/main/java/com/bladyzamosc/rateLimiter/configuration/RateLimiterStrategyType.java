@@ -2,7 +2,7 @@ package com.bladyzamosc.rateLimiter.configuration;
 
 import com.bladyzamosc.rateLimiter.strategies.RateLimiterStrategy;
 import com.bladyzamosc.rateLimiter.strategies.impl.FixedTimeWindowStrategy;
-import com.bladyzamosc.rateLimiter.strategies.impl.RateLimiterException;
+import com.bladyzamosc.rateLimiter.exceptions.RateLimiterException;
 
 /**
  * User: Bladyzamosc

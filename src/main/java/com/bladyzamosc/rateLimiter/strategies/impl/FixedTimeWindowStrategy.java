@@ -1,6 +1,7 @@
 package com.bladyzamosc.rateLimiter.strategies.impl;
 
 import com.bladyzamosc.rateLimiter.configuration.RateLimiterConfiguration;
+import com.bladyzamosc.rateLimiter.exceptions.RateLimiterException;
 
 /**
  * User: Z6EKI
