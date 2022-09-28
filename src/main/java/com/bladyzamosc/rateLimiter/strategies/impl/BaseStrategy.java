@@ -26,7 +26,8 @@ public abstract class BaseStrategy implements RateLimiterStrategy
       throw new RateLimiterException("Length should be higher than 0");
     }
 
-    synchronized (mutex) {
+    synchronized (mutex)
+    {
       return reserve(length);
     }
   }

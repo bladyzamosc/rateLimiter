@@ -27,13 +27,26 @@ public class TestRateLimiter
   @Test
   public void testRateLimiterAcquire_1()
   {
+    int timeInMillis = 100;
     RateLimiter rateLimiter = RateLimiter.create(RateLimiterConfiguration.RateLimiterConfigurationBuilder.aRateLimiterConfiguration()
       .withLimit(1)
-      .withTimeInMillis(10000)
+      .withTimeInMillis(timeInMillis)
       .build());
 
     Assertions.assertEquals(0, rateLimiter.acquire(1));
+  }
 
+  @Test
+  public void testRateLimiterAcquire_1_withWait() throws InterruptedException
+  {
+    int timeInMillis = 100;
+    RateLimiter rateLimiter = RateLimiter.create(RateLimiterConfiguration.RateLimiterConfigurationBuilder.aRateLimiterConfiguration()
+      .withLimit(1)
+      .withTimeInMillis(timeInMillis)
+      .build());
+    Assertions.assertEquals(0, rateLimiter.acquire(1));
+    TimeUnit.MILLISECONDS.sleep(timeInMillis + 1);
+    Assertions.assertEquals(0, rateLimiter.acquire(1));
   }
 
   @Test
@@ -47,7 +60,7 @@ public class TestRateLimiter
       .withTimeInMillis(100000000)
       .build());
 
-    ExecutorService service = Executors.newFixedThreadPool(10);
+    ExecutorService service = Executors.newFixedThreadPool(200);
     CountDownLatch latch = new CountDownLatch(noThreads);
     for (int i = 0; i < noThreads; i++)
     {
@@ -68,7 +81,16 @@ public class TestRateLimiter
       .withTimeInMillis(10000)
       .build());
     Assertions.assertThrows(RateLimiterException.class, () -> rateLimiter.acquire(2));
+  }
 
+  @Test
+  public void testRateLimiterAcquire_exceptionMinusAcquire()
+  {
+    RateLimiter rateLimiter = RateLimiter.create(RateLimiterConfiguration.RateLimiterConfigurationBuilder.aRateLimiterConfiguration()
+      .withLimit(1)
+      .withTimeInMillis(10000)
+      .build());
+    Assertions.assertThrows(RateLimiterException.class, () -> rateLimiter.acquire(-2));
   }
 
 }
