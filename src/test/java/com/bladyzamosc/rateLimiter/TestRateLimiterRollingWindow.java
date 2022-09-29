@@ -10,17 +10,19 @@ import java.util.concurrent.*;
 
 /**
  * User: Bladyzamosc
- * Date: 28.09.2022
+ * Date: 29.09.2022
  */
-public class TestRateLimiter
+public class TestRateLimiterRollingWindow
 {
-
   @Test
   public void testRateLimiterCreation()
   {
-    RateLimiter rateLimiter = RateLimiter.create(RateLimiterConfiguration.RateLimiterConfigurationBuilder.aRateLimiterConfiguration().build());
+    RateLimiter rateLimiter = RateLimiter.create(RateLimiterConfiguration.RateLimiterConfigurationBuilder
+      .aRateLimiterConfiguration()
+      .withType(RateLimiterStrategyType.ROLLING_WINDOW)
+      .build());
     Assertions.assertEquals(1000, rateLimiter.getConfiguration().getTimeInMillis());
-    Assertions.assertEquals(RateLimiterStrategyType.FIXED_TIME_WINDOW, rateLimiter.getConfiguration().getType());
+    Assertions.assertEquals(RateLimiterStrategyType.ROLLING_WINDOW, rateLimiter.getConfiguration().getType());
     Assertions.assertEquals(5, rateLimiter.getConfiguration().getLimit());
   }
 
@@ -31,6 +33,7 @@ public class TestRateLimiter
     RateLimiter rateLimiter = RateLimiter.create(RateLimiterConfiguration.RateLimiterConfigurationBuilder.aRateLimiterConfiguration()
       .withLimit(1)
       .withTimeInMillis(timeInMillis)
+      .withType(RateLimiterStrategyType.ROLLING_WINDOW)
       .build());
 
     Assertions.assertEquals(0, rateLimiter.acquire(1));
@@ -43,6 +46,7 @@ public class TestRateLimiter
     RateLimiter rateLimiter = RateLimiter.create(RateLimiterConfiguration.RateLimiterConfigurationBuilder.aRateLimiterConfiguration()
       .withLimit(1)
       .withTimeInMillis(timeInMillis)
+      .withType(RateLimiterStrategyType.ROLLING_WINDOW)
       .build());
     Assertions.assertEquals(0, rateLimiter.acquire(1));
     TimeUnit.MILLISECONDS.sleep(timeInMillis + 1);
@@ -58,6 +62,7 @@ public class TestRateLimiter
     RateLimiter rateLimiter = RateLimiter.create(RateLimiterConfiguration.RateLimiterConfigurationBuilder.aRateLimiterConfiguration()
       .withLimit(limit)
       .withTimeInMillis(100000000)
+      .withType(RateLimiterStrategyType.ROLLING_WINDOW)
       .build());
 
     ExecutorService service = Executors.newFixedThreadPool(200);
@@ -79,6 +84,7 @@ public class TestRateLimiter
     RateLimiter rateLimiter = RateLimiter.create(RateLimiterConfiguration.RateLimiterConfigurationBuilder.aRateLimiterConfiguration()
       .withLimit(1)
       .withTimeInMillis(10000)
+      .withType(RateLimiterStrategyType.ROLLING_WINDOW)
       .build());
     Assertions.assertThrows(RateLimiterException.class, () -> rateLimiter.acquire(2));
   }
@@ -89,9 +95,26 @@ public class TestRateLimiter
     RateLimiter rateLimiter = RateLimiter.create(RateLimiterConfiguration.RateLimiterConfigurationBuilder.aRateLimiterConfiguration()
       .withLimit(1)
       .withTimeInMillis(10000)
+      .withType(RateLimiterStrategyType.ROLLING_WINDOW)
       .build());
-
     Assertions.assertThrows(RateLimiterException.class, () -> rateLimiter.acquire(-2));
   }
 
+  @Test
+  public void testRateLimiterAcquire_rollingTest() throws InterruptedException
+  {
+    int timeInMillis = 2000;
+    RateLimiter rateLimiter = RateLimiter.create(RateLimiterConfiguration.RateLimiterConfigurationBuilder.aRateLimiterConfiguration()
+      .withLimit(3)
+      .withTimeInMillis(timeInMillis)
+      .withType(RateLimiterStrategyType.ROLLING_WINDOW)
+      .build());
+    Assertions.assertEquals(2, rateLimiter.acquire());
+    TimeUnit.MILLISECONDS.sleep(1000);
+    Assertions.assertEquals(1, rateLimiter.acquire());
+    TimeUnit.MILLISECONDS.sleep(1000);
+    Assertions.assertEquals(1, rateLimiter.acquire());
+    TimeUnit.MILLISECONDS.sleep(2000);
+    Assertions.assertEquals(2, rateLimiter.acquire());
+  }
 }

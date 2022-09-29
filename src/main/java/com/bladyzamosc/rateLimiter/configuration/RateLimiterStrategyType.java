@@ -2,7 +2,7 @@ package com.bladyzamosc.rateLimiter.configuration;
 
 import com.bladyzamosc.rateLimiter.strategies.RateLimiterStrategy;
 import com.bladyzamosc.rateLimiter.strategies.impl.FixedTimeWindowStrategy;
-import com.bladyzamosc.rateLimiter.exceptions.RateLimiterException;
+import com.bladyzamosc.rateLimiter.strategies.impl.RollingWindowStrategy;
 
 /**
  * User: Bladyzamosc
@@ -23,10 +23,9 @@ public enum RateLimiterStrategyType
       @Override
       public RateLimiterStrategy create(RateLimiterConfiguration rateLimiterConfiguration)
       {
-        throw new RateLimiterException("Not implemented yet");
+        return new RollingWindowStrategy(rateLimiterConfiguration);
       }
     };
-
 
   public abstract RateLimiterStrategy create(RateLimiterConfiguration rateLimiterConfiguration);
 }
